@@ -1,2 +1,2 @@
 # wepbash
-WEP/WPS Pentesting app for Android
+Fun project, attempt to make a WEP/EAP/WPS penetrating tool for Android
