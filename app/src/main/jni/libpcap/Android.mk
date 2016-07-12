@@ -1,6 +1,9 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
+ARCH := $(APP_ABI)
+
+
 LOCAL_SRC_FILES:=\
 	bpf_dump.c\
 	bpf/net/bpf_filter.c\

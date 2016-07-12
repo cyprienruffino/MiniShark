@@ -40,3 +40,9 @@ captures/
 *.jks
 
 *~
+
+#JNI Generated files
+app/src/main/libs
+app/src/main/obj
+libs
+obj

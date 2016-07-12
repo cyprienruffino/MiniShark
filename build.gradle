@@ -12,4 +12,7 @@ allprojects {
     repositories {
         jcenter()
     }
+    sourceSets.main{
+        jniLibs.srcDir="libs"
+    }
 }

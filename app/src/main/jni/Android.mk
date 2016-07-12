@@ -1,3 +1,5 @@
+ARCH := $(APP_ABI)
+
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
@@ -32,7 +34,9 @@ LOCAL_SRC_FILES :=\
     jnetpcap_bpf.cpp
 
 LOCAL_C_INCLUDES :=\
+	$(NDK_ROOT)/platforms/android-8/arch-x86/usr/include\
 	$(NDK_ROOT)/platforms/android-8/arch-arm/usr/include\
+	$(NDK_ROOT)/platforms/android-8/arch-mips/usr/include\
 	$(LOCAL_PATH)/libpcap
 
 LOCAL_CFLAGS := -DLIBPCAP_VERSION=0x097
