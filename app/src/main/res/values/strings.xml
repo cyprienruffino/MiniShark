@@ -2,5 +2,6 @@
 
     <string name="app_name">WepBash</string>
     <string name="fps">0.0 FPS</string>
+    <string name="wifisearch">Search for weak networks!</string>
 
 </resources>
