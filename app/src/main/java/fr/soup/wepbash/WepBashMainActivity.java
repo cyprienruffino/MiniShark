@@ -11,15 +11,21 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import fr.soup.wepbash.attack.AttackCallback;
+import fr.soup.wepbash.attack.AttackerInterface;
+import fr.soup.wepbash.attack.EAPAttacker;
+import fr.soup.wepbash.attack.FailedAttackException;
+import fr.soup.wepbash.attack.WEPAttacker;
+import fr.soup.wepbash.attack.WPSAttacker;
+import fr.soup.wepbash.discovery.DiscoveryCallback;
+import fr.soup.wepbash.discovery.WiFiDiscovery;
+
 /**
  * Created by cyprien on 08/07/16.
  */
 public class WepBashMainActivity extends Activity{
 
-
-
     ListView lv;
-    WiFiDiscovery discovery;
     ArrayAdapter<String> adapter;
     final Context context = this;
 
@@ -74,7 +80,12 @@ public class WepBashMainActivity extends Activity{
     }
 
     public void chooserDialog(String ssid, String key){
-
+        ActionDialog dialog=new ActionDialog();
+        Bundle b = new Bundle();
+        b.putString("ssid", ssid);
+        b.putString("key", key);
+        dialog.setArguments(b);
+        dialog.show(getFragmentManager(), "dialog");
     }
 
 }

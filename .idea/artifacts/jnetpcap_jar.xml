@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jnetpcap:jar">
+    <output-path>$PROJECT_DIR$/build/classes/artifacts/jnetpcap_jar</output-path>
+    <root id="archive" name="jnetpcap.jar">
+      <element id="module-output" name="jnetpcap" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/app/src/jnetpcap/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
