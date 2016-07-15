@@ -1,9 +1,11 @@
-package fr.soup.wepbash;
+package fr.soup.wepbash.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+
+import fr.soup.wepbash.R;
 
 /**
  * Created by cyprien on 13/07/16.

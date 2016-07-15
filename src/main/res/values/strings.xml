@@ -7,5 +7,6 @@
     <string name="connect">Connect to this acces point</string>
     <string name="getKey">Get the password key</string>
     <string name="credits">Credits</string>
+    <string name="choose_device">Choose a network interface</string>
 
 </resources>

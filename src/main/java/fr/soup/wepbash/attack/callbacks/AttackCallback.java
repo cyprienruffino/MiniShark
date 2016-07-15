@@ -1,4 +1,4 @@
-package fr.soup.wepbash.attack;
+package fr.soup.wepbash.attack.callbacks;
 
 /**
  * Created by cyprien on 12/07/16.
