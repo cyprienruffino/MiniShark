@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="jnetpcap:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/jnetpcap_jar</output-path>
-    <root id="archive" name="jnetpcap.jar">
-      <element id="module-output" name="jnetpcap" />
-    </root>
-  </artifact>
-</component>
