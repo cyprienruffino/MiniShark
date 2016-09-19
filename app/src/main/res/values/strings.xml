@@ -1,0 +1,18 @@
+<resources>
+
+    <string name="app_name">MiniShark</string>
+    <string name="fps">0.0 FPS</string>
+    <string name="wifisearch">Search for weak networks!</string>
+    <string name="attack_end">Done!</string>
+    <string name="connect_title">Not connected</string>
+    <string name="getKey">Get the password key</string>
+    <string name="credits">Credits</string>
+    <string name="choose_device">Choose a network interface</string>
+    <string name="yes">Of course!</string>
+    <string name="no">No!</string>
+    <string name="not_connected_message">You are not connected to any WiFi network. Would you like to connect to one?</string>
+    <string name="connect">Connect</string>
+    <string name="disconnected_toast">WiFi is disabled... making it enabled</string>
+    <string name="no_wifi_connected_toast">WiFi is disconnected. Please, connect to a network</string>
+
+</resources>

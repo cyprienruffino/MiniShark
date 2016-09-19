@@ -1,7 +1,10 @@
+.idea
 .gradle
+.jnetpcap/build
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
 /build
 /captures
+/app/build
