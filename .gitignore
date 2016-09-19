@@ -1,6 +1,6 @@
 .idea
 .gradle
-.jnetpcap/build
+/jnetpcap/build
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
