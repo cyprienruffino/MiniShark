@@ -14,5 +14,8 @@
     <string name="connect">Connect</string>
     <string name="disconnected_toast">WiFi is disabled... making it enabled</string>
     <string name="no_wifi_connected_toast">WiFi is disconnected. Please, connect to a network</string>
+    <string name="notification_sniffing">MiniShark is sniffing packets</string>
+    <string name="notification_stop">Stop sniffing</string>
+    <string name="notification_sniffing_title">MiniShark is running</string>
 
 </resources>
