@@ -43,7 +43,7 @@ public class TcpDumpWrapper extends Service {
     public static final String REFRESH_DATA_INTENT = "tcpdumpwrapper_refresh_intent";
     public static final String STOP_TCPDUMP = "tcpdumpwrapper_stop_tcpdump";
     public static final String REFRESH_DATA = "tcpdumpwrapper_refresh_data";
-    private static final String TCP_DUMPABSOLUTE_PATH = "/data/data/ovh.soup.minishark/files/tcpdump";
+    private static final String TCP_DUMPABSOLUTE_PATH = "/data/data/ovh.soup.minishark_icon/files/tcpdump";
 
     private String flags;
 
@@ -51,8 +51,6 @@ public class TcpDumpWrapper extends Service {
 
     private BroadcastReceiver stopReceiver;
     private AsyncTask tcpdumpTask;
-
-
 
     @Override
     public void onCreate() {
@@ -68,6 +66,7 @@ public class TcpDumpWrapper extends Service {
             }
         };
         registerReceiver(stopReceiver, new IntentFilter(STOP_TCPDUMP));
+
 
 
         try {
@@ -89,7 +88,7 @@ public class TcpDumpWrapper extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-//        flags = intent.getBundleExtra(FLAGS).getString(FLAGS);
+        flags=intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT);
         createNotification();
         tcpdumpRunning=true;
         runTCPDump();
@@ -99,14 +98,15 @@ public class TcpDumpWrapper extends Service {
 
     private void runTCPDump(){
 
-        tcpdumpTask =new AsyncTask() {
+        tcpdumpTask = new AsyncTask() {
             Process tcpdump;
             ArrayList<String> buffer = new ArrayList<String>();
 
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    tcpdump =  Runtime.getRuntime().exec(new String[]{"su", "-c", TCP_DUMPABSOLUTE_PATH, "-G 3"});
+                    if(flags == null) flags = "";
+                    tcpdump =  Runtime.getRuntime().exec(new String[]{"su", "-c", TCP_DUMPABSOLUTE_PATH, flags});
 
                     //TODO Trouver le moyen de récupérer les logs de tcpdump
 
@@ -150,6 +150,4 @@ public class TcpDumpWrapper extends Service {
         startForeground(notificationId, notification);
 
     }
-
-
 }

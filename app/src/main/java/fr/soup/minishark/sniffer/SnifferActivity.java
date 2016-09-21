@@ -1,4 +1,4 @@
-package fr.soup.minishark;
+package fr.soup.minishark.sniffer;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -14,21 +14,24 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fr.soup.minishark.R;
 import fr.soup.minishark.sniffer.TcpDumpWrapper;
 
 /**
  * Created by cyprien on 08/07/16.
  */
-public class MiniSharkMainActivity extends Activity{
+public class SnifferActivity extends Activity{
+
+    public static final String SNIFFER_FLAGS_INTENT = "snifferactivityflagsintent";
 
     final Context context = this;
     private ListView listView;
-    boolean tcpdumpBound = false;
+    private boolean tcpdumpBound = false;
+    private String flags;
     TcpDumpWrapper mService;
 
     private BroadcastReceiver sharkReceiver = new BroadcastReceiver() {
@@ -47,8 +50,10 @@ public class MiniSharkMainActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.sniffer);
 
+        Intent intent = getIntent();
+        flags= intent.getStringExtra(SNIFFER_FLAGS_INTENT);
 
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo mWifi = wifi.getConnectionInfo();
@@ -78,6 +83,7 @@ public class MiniSharkMainActivity extends Activity{
 
     public void sharkStart(View view) {
         Intent intent = new Intent(this, TcpDumpWrapper.class);
+        intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT, flags);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
