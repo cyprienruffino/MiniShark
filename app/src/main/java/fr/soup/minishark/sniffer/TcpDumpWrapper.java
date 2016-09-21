@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,10 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import fr.soup.minishark.R;
 
@@ -37,9 +33,12 @@ public class TcpDumpWrapper extends Service {
     private static final String TCP_DUMPABSOLUTE_PATH = "/data/data/ovh.soup.minishark/files/tcpdump";
 
     private String flags;
-    private boolean tcpdumpRunning;
     private BroadcastReceiver stopReceiver;
-    private AsyncTask tcpdumpTask;
+    private Process tcpdump;
+    private AsyncTask bufferRead;
+
+    public boolean tcpdumpRunning;
+    public BufferedReader tcpdumpStream;
 
 
     private final IBinder mBinder = new TcpDumpWrapperBinder();
@@ -57,9 +56,9 @@ public class TcpDumpWrapper extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(STOP_TCPDUMP)) {
-                    tcpdumpRunning = false;
-                    if(tcpdumpTask !=null)
-                        tcpdumpTask.cancel(true);
+                    tcpdump.destroy();
+                    bufferRead.cancel(true);
+                    tcpdumpRunning=false;
                 }
             }
         };
@@ -87,38 +86,40 @@ public class TcpDumpWrapper extends Service {
         flags=intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT);
         createNotification();
         tcpdumpRunning=true;
-        runTCPDump();
+        try {
+            runTCPDump();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return mBinder;
     }
 
 
-    private void runTCPDump(){
-
-        tcpdumpTask = new AsyncTask() {
-            Process tcpdump;
-            ArrayList<String> buffer = new ArrayList<String>();
-
+    private void runTCPDump() throws IOException {
+        if (flags == null || flags == "null")
+            tcpdump = Runtime.getRuntime().exec(new String[]{"su", "-c", TCP_DUMPABSOLUTE_PATH, flags});
+        else
+            tcpdump = Runtime.getRuntime().exec(new String[]{"su", "-c", TCP_DUMPABSOLUTE_PATH});
+        tcpdumpStream = new BufferedReader(new InputStreamReader(tcpdump.getInputStream()));
+        bufferRead = new AsyncTask() {
+            String buffer;
             @Override
             protected Object doInBackground(Object[] objects) {
-                try {
-                    if(flags == null) flags = "";
-                    tcpdump =  Runtime.getRuntime().exec(new String[]{"su", "-c", TCP_DUMPABSOLUTE_PATH, flags});
-
-                    //TODO Trouver le moyen de récupérer les logs de tcpdump
-
-                    Intent refresh;
-                    refresh = new Intent(TcpDumpWrapper.REFRESH_DATA_INTENT);
-                    refresh.putExtra(REFRESH_DATA, buffer);
-                    sendBroadcast(refresh);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while(tcpdumpRunning) {
+                    try {
+                        if((buffer = tcpdumpStream.readLine())!= null) {
+                            Intent refresh;
+                            refresh = new Intent(TcpDumpWrapper.REFRESH_DATA_INTENT);
+                            refresh.putExtra(REFRESH_DATA, buffer);
+                            sendBroadcast(refresh);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return null;
             }
-        };
-
-        tcpdumpTask.execute(tcpdumpTask);
+        }.execute();
     }
 
     private void createNotification(){
