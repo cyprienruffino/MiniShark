@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,7 +83,22 @@ public class SnifferActivity extends Activity{
         }
     }
 
-    public void sharkStart(View view) {
+    public void snifferStart(View view) {
+
+        EditText editText = (EditText) findViewById(R.id.manualflags);
+        flags += editText.getText().toString() + " ";
+
+
+        if(((CheckBox)findViewById(R.id.saveinfile)).isChecked()) {
+            editText = (EditText) findViewById(R.id.pcapfile);
+            flags += "-w /storage/emulated/legacy/" + editText.getText().toString() + " ";
+        }
+
+        if(((CheckBox)findViewById(R.id.rununtil)).isChecked()) {
+            editText = (EditText) findViewById(R.id.rununtiltime);
+            flags += "-G " + editText.getText().toString() + " -W 1 ";
+        }
+
         Intent intent = new Intent(this, TcpDumpWrapper.class);
         intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT, flags);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);

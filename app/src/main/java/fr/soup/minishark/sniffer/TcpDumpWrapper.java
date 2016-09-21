@@ -30,6 +30,17 @@ import fr.soup.minishark.R;
  * Created by cyprien on 19/09/16.
  */
 public class TcpDumpWrapper extends Service {
+    public static final String FLAGS = "tcpdumpwrapper_flags";
+    public static final String REFRESH_DATA_INTENT = "tcpdumpwrapper_refresh_intent";
+    public static final String STOP_TCPDUMP = "tcpdumpwrapper_stop_tcpdump";
+    public static final String REFRESH_DATA = "tcpdumpwrapper_refresh_data";
+    private static final String TCP_DUMPABSOLUTE_PATH = "/data/data/ovh.soup.minishark/files/tcpdump";
+
+    private String flags;
+    private boolean tcpdumpRunning;
+    private BroadcastReceiver stopReceiver;
+    private AsyncTask tcpdumpTask;
+
 
     private final IBinder mBinder = new TcpDumpWrapperBinder();
     public class TcpDumpWrapperBinder extends Binder {
@@ -38,19 +49,6 @@ public class TcpDumpWrapper extends Service {
             return TcpDumpWrapper.this;
         }
     }
-
-    public static final String FLAGS = "tcpdumpwrapper_flags";
-    public static final String REFRESH_DATA_INTENT = "tcpdumpwrapper_refresh_intent";
-    public static final String STOP_TCPDUMP = "tcpdumpwrapper_stop_tcpdump";
-    public static final String REFRESH_DATA = "tcpdumpwrapper_refresh_data";
-    private static final String TCP_DUMPABSOLUTE_PATH = "/data/data/ovh.soup.minishark/files/tcpdump";
-
-    private String flags;
-
-    private boolean tcpdumpRunning;
-
-    private BroadcastReceiver stopReceiver;
-    private AsyncTask tcpdumpTask;
 
     @Override
     public void onCreate() {
@@ -66,8 +64,6 @@ public class TcpDumpWrapper extends Service {
             }
         };
         registerReceiver(stopReceiver, new IntentFilter(STOP_TCPDUMP));
-
-
 
         try {
             InputStream ins = getResources().openRawResource (R.raw.tcpdump);
