@@ -43,7 +43,7 @@ public class TcpDumpWrapper extends Service {
     public static final String REFRESH_DATA_INTENT = "tcpdumpwrapper_refresh_intent";
     public static final String STOP_TCPDUMP = "tcpdumpwrapper_stop_tcpdump";
     public static final String REFRESH_DATA = "tcpdumpwrapper_refresh_data";
-    private static final String TCP_DUMPABSOLUTE_PATH = "/data/data/ovh.soup.minishark_icon/files/tcpdump";
+    private static final String TCP_DUMPABSOLUTE_PATH = "/data/data/ovh.soup.minishark/files/tcpdump";
 
     private String flags;
 

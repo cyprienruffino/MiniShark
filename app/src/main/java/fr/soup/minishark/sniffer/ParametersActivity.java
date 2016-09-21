@@ -31,7 +31,7 @@ public class ParametersActivity extends Activity {
 
         if(((CheckBox)findViewById(R.id.saveinfile)).isChecked()) {
             editText = (EditText) findViewById(R.id.pcapfile);
-            flags += "-F " + editText.getText().toString() + " ";
+            flags += "-w /storage/emulated/legacy/" + editText.getText().toString() + " ";
         }
 
         if(((CheckBox)findViewById(R.id.rununtil)).isChecked()) {
