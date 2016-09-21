@@ -14,14 +14,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import fr.soup.minishark.R;
-import fr.soup.minishark.sniffer.TcpDumpWrapper;
 
 /**
  * Created by cyprien on 08/07/16.
@@ -34,17 +35,16 @@ public class SnifferActivity extends Activity{
     private ListView listView;
     private boolean tcpdumpBound = false;
     private String flags;
+    private ArrayList<String> packets;
+    private ArrayAdapter<String> adapter;
     TcpDumpWrapper mService;
 
     private BroadcastReceiver sharkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction() == TcpDumpWrapper.REFRESH_DATA_INTENT) {
-                for (String data : intent.getStringArrayListExtra(TcpDumpWrapper.REFRESH_DATA)) {
-                    TextView textView = new TextView(context);
-                    textView.setText(data);
-                    listView.addFooterView(textView);
-                }
+                packets.add(intent.getStringExtra(TcpDumpWrapper.REFRESH_DATA));
+                adapter.notifyDataSetChanged();
             }
         }
     };
@@ -70,7 +70,13 @@ public class SnifferActivity extends Activity{
             Toast.makeText(context.getApplicationContext(), R.string.no_wifi_connected_toast, Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
+
         listView=(ListView)findViewById(R.id.sharkListView);
+        listView.setTranscriptMode(2);
+        packets=new ArrayList<>();
+        adapter= new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, packets);
+
+        listView.setAdapter(adapter);
         registerReceiver(sharkReceiver, new IntentFilter(TcpDumpWrapper.REFRESH_DATA_INTENT));
     }
 
