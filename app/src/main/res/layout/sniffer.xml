@@ -79,13 +79,28 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <Button
             android:text="Start capture!"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button2"
-            android:onClick="snifferStart"/>
+            android:id="@+id/button_snifferStart"
+            android:onClick="snifferStart"
+            android:layout_weight="1" />
 
+        <Button
+            android:text="Clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_clear"
+            android:layout_weight="1"
+            android:onClick="clear" />
+    </LinearLayout>
 
     <ListView
         android:layout_width="wrap_content"

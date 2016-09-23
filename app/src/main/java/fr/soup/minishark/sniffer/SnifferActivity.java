@@ -12,9 +12,11 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,12 +32,13 @@ import fr.soup.minishark.dialogs.ConnectionDialog;
  */
 public class SnifferActivity extends Activity{
 
-    public static final String SNIFFER_FLAGS_INTENT = "snifferactivityflagsintent";
+    public static final String SNIFFER_FLAGS_INTENT_MANUAL_FLAGS = "snifferactivityflagsintentmanualflags";
+    public static final String SNIFFER_FLAGS_INTENT_SAVE_IN = "snifferactivityflagsintentsavein";
+    public static final String SNIFFER_FLAGS_INTENT_RUN_UNTIL = "snifferactivityflagsintentrununtil";
 
     final Context context = this;
     private ListView listView;
     private boolean tcpdumpBound = false;
-    private String flags;
     private ArrayList<String> packets;
     private ArrayAdapter<String> adapter;
     TcpDumpWrapper mService;
@@ -44,6 +47,7 @@ public class SnifferActivity extends Activity{
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction() == TcpDumpWrapper.REFRESH_DATA_INTENT) {
+                Log.wtf("Refresh","InReceiver");
                 packets.add(intent.getStringExtra(TcpDumpWrapper.REFRESH_DATA));
                 adapter.notifyDataSetChanged();
             }
@@ -54,9 +58,6 @@ public class SnifferActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sniffer);
-
-        Intent intent = getIntent();
-        flags= intent.getStringExtra(SNIFFER_FLAGS_INTENT);
 
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo mWifi = wifi.getConnectionInfo();
@@ -78,40 +79,45 @@ public class SnifferActivity extends Activity{
 
         listView.setAdapter(adapter);
         registerReceiver(sharkReceiver, new IntentFilter(TcpDumpWrapper.REFRESH_DATA_INTENT));
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (tcpdumpBound) {
-            Intent intent = new Intent();
-            intent.setAction(TcpDumpWrapper.STOP_TCPDUMP);
-            sendBroadcast(intent);
-            unbindService(mConnection);
-            tcpdumpBound = false;
-            Toast.makeText(context.getApplicationContext(), R.string.tcpdump_stopped, Toast.LENGTH_LONG).show();
-        }
     }
 
     public void snifferStart(View view) {
-
-        EditText editText = (EditText) findViewById(R.id.manualflags);
-        flags += editText.getText().toString() + " ";
-
-
-        if(((CheckBox)findViewById(R.id.saveinfile)).isChecked()) {
-            editText = (EditText) findViewById(R.id.pcapfile);
-            flags += "-w /storage/emulated/legacy/" + editText.getText().toString() + " ";
-        }
-
-        if(((CheckBox)findViewById(R.id.rununtil)).isChecked()) {
-            editText = (EditText) findViewById(R.id.rununtiltime);
-            flags += "-G " + editText.getText().toString() + " -W 1 ";
+        if(tcpdumpBound) {
+            unbindService(mConnection);
+            tcpdumpBound=false;
         }
 
         Intent intent = new Intent(this, TcpDumpWrapper.class);
-        intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT, flags);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        EditText editText = (EditText) findViewById(R.id.manualflags);
+
+        if(editText.getText().toString()!=null)
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS, editText.getText().toString() + " ");
+        else
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS,"");
+
+        if(((CheckBox)findViewById(R.id.saveinfile)).isChecked()) {
+            editText = (EditText) findViewById(R.id.pcapfile);
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN, "/storage/emulated/legacy/" + editText.getText().toString());
+        }
+        else
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN,"");
+
+        if(((CheckBox)findViewById(R.id.rununtil)).isChecked()) {
+            editText = (EditText) findViewById(R.id.rununtiltime);
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_RUN_UNTIL, editText.getText().toString());
+        }
+        else
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_RUN_UNTIL,"");
+        
+        tcpdumpBound=bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        ((Button)findViewById(R.id.button_snifferStart)).setText(R.string.restart_capture);
     }
 
 
@@ -129,4 +135,9 @@ public class SnifferActivity extends Activity{
             tcpdumpBound = false;
         }
     };
+
+    public void clear(View view) {
+        packets.clear();
+        adapter.notifyDataSetChanged();
+    }
 }

@@ -5,7 +5,7 @@
     android:weightSum="1">
 
     <ImageView
-        android:src="@drawable/minishark_splash"
+        android:src="@drawable/minishark_splash_old"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/imageView4"
