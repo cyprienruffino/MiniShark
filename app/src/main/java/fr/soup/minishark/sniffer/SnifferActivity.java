@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fr.soup.minishark.R;
+import fr.soup.minishark.dialogs.ConnectionDialog;
 
 /**
  * Created by cyprien on 08/07/16.
@@ -67,8 +68,7 @@ public class SnifferActivity extends Activity{
         }
 
         if (mWifi.getSupplicantState() != SupplicantState.COMPLETED) {
-            Toast.makeText(context.getApplicationContext(), R.string.no_wifi_connected_toast, Toast.LENGTH_LONG).show();
-            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            new ConnectionDialog().show(getFragmentManager(),"connection_dialog");
         }
 
         listView=(ListView)findViewById(R.id.sharkListView);
@@ -84,8 +84,12 @@ public class SnifferActivity extends Activity{
     protected void onStop() {
         super.onStop();
         if (tcpdumpBound) {
+            Intent intent = new Intent();
+            intent.setAction(TcpDumpWrapper.STOP_TCPDUMP);
+            sendBroadcast(intent);
             unbindService(mConnection);
             tcpdumpBound = false;
+            Toast.makeText(context.getApplicationContext(), R.string.tcpdump_stopped, Toast.LENGTH_LONG).show();
         }
     }
 

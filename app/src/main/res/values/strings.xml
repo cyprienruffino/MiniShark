@@ -17,5 +17,6 @@
     <string name="notification_sniffing">MiniShark is sniffing packets</string>
     <string name="notification_stop">Stop sniffing</string>
     <string name="notification_sniffing_title">MiniShark is running</string>
+    <string name="tcpdump_stopped">Stopping tcpdump...</string>
 
 </resources>
