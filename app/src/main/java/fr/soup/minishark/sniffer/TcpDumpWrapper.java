@@ -56,6 +56,7 @@ public class TcpDumpWrapper extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+
         command=constructCommand(intent);
         createNotification();
         tcpdumpRunning=true;
@@ -71,7 +72,6 @@ public class TcpDumpWrapper extends Service {
     public boolean onUnbind(Intent intent) {
         boolean unbind=super.onUnbind(intent);
         Log.wtf("Unbind","In method");
-        stop(this);
         return unbind;
     }
 
@@ -79,6 +79,7 @@ public class TcpDumpWrapper extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.wtf("Bind","In method");
         if(stopReceiver!=null)
             unregisterReceiver(stopReceiver);
         stopReceiver = new BroadcastReceiver() {
@@ -91,21 +92,23 @@ public class TcpDumpWrapper extends Service {
         };
         registerReceiver(stopReceiver, new IntentFilter(STOP_TCPDUMP));
 
-        try {
-            InputStream ins = getResources().openRawResource (R.raw.tcpdump);
-            byte[] buffer = new byte[ins.available()];
-            ins.read(buffer);
-            ins.close();
-            FileOutputStream fos = openFileOutput("tcpdump", Context.MODE_PRIVATE);
-            fos.write(buffer);
-            fos.close();
+        File file = new File(TCPDUMP);
+        if(!file.exists()) {
+            try {
+                InputStream ins = getResources().openRawResource(R.raw.tcpdump);
+                byte[] buffer = new byte[ins.available()];
+                ins.read(buffer);
+                ins.close();
+                FileOutputStream fos = openFileOutput("tcpdump", Context.MODE_PRIVATE);
+                fos.write(buffer);
+                fos.close();
 
-            File file = getFileStreamPath ("tcpdump");
-            file.setExecutable(true);
-        } catch (IOException e) {
-            e.printStackTrace();
+                file = getFileStreamPath("tcpdump");
+                file.setExecutable(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     private void stop(Context context) {

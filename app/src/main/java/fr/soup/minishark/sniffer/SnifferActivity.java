@@ -35,6 +35,7 @@ public class SnifferActivity extends Activity{
     public static final String SNIFFER_FLAGS_INTENT_MANUAL_FLAGS = "snifferactivityflagsintentmanualflags";
     public static final String SNIFFER_FLAGS_INTENT_SAVE_IN = "snifferactivityflagsintentsavein";
     public static final String SNIFFER_FLAGS_INTENT_RUN_UNTIL = "snifferactivityflagsintentrununtil";
+    private static final String TCPDUMP_BINDER = "snifferactivitybundletcpdump";
 
     final Context context = this;
     private ListView listView;
@@ -42,6 +43,7 @@ public class SnifferActivity extends Activity{
     private ArrayList<String> packets;
     private ArrayAdapter<String> adapter;
     TcpDumpWrapper mService;
+    TcpDumpWrapper.TcpDumpWrapperBinder binder;
 
     private BroadcastReceiver sharkReceiver = new BroadcastReceiver() {
         @Override
@@ -50,6 +52,18 @@ public class SnifferActivity extends Activity{
                 Log.wtf("Refresh","InReceiver");
                 packets.add(intent.getStringExtra(TcpDumpWrapper.REFRESH_DATA));
                 adapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+    private BroadcastReceiver stopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() == TcpDumpWrapper.STOP_TCPDUMP) {
+                if(mConnection!=null && binder.isBinderAlive() && tcpdumpBound) {
+                    unbindService(mConnection);
+                    tcpdumpBound = false;
+                }
             }
         }
     };
@@ -79,12 +93,23 @@ public class SnifferActivity extends Activity{
 
         listView.setAdapter(adapter);
         registerReceiver(sharkReceiver, new IntentFilter(TcpDumpWrapper.REFRESH_DATA_INTENT));
+        registerReceiver(stopReceiver, new IntentFilter(TcpDumpWrapper.STOP_TCPDUMP));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBinder(TCPDUMP_BINDER, binder);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState.getBinder(TCPDUMP_BINDER)!=null)
+            binder= (TcpDumpWrapper.TcpDumpWrapperBinder) savedInstanceState.getBinder(TCPDUMP_BINDER);
+
     }
 
     public void snifferStart(View view) {
@@ -116,7 +141,6 @@ public class SnifferActivity extends Activity{
             intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_RUN_UNTIL,"");
         
         tcpdumpBound=bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
         ((Button)findViewById(R.id.button_snifferStart)).setText(R.string.restart_capture);
     }
 
@@ -125,7 +149,7 @@ public class SnifferActivity extends Activity{
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            TcpDumpWrapper.TcpDumpWrapperBinder binder = (TcpDumpWrapper.TcpDumpWrapperBinder) service;
+            binder = (TcpDumpWrapper.TcpDumpWrapperBinder) service;
             mService = binder.getService();
             tcpdumpBound = true;
         }
@@ -139,5 +163,11 @@ public class SnifferActivity extends Activity{
     public void clear(View view) {
         packets.clear();
         adapter.notifyDataSetChanged();
+    }
+
+    public void snifferStop(View view) {
+        Intent intent = new Intent();
+        intent.setAction(TcpDumpWrapper.STOP_TCPDUMP);
+        sendBroadcast(intent);
     }
 }

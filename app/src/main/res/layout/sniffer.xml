@@ -94,6 +94,14 @@
             android:layout_weight="1" />
 
         <Button
+            android:text="Stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_stop"
+            android:onClick="snifferStop"
+            android:layout_weight="1" />
+
+        <Button
             android:text="Clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
