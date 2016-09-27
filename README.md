@@ -1,8 +1,16 @@
 # MiniShark
-A mini packet sniffer for rooted Android devices
+**A mini packet sniffer and network analysis tool for rooted Android devices**
+
+# Features 
+**(Those are planned features, the application is still in heavy developpment)**
+
+- Packets capture
+- Packets header data visualisation
+- Packet data analysis
+- Frame reconstruction
+- Files from packet capture extraction
 
 # Legal notes
-
 ## Licence
 MiniShark is under GPL licence, and is using : 
 - gradle : Apache Licence
