@@ -20,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 import fr.soup.minishark.R;
 
@@ -36,7 +35,7 @@ public class TcpDumpWrapper extends Service {
     private static final String TCPDUMP = "/data/data/ovh.soup.minishark/files/tcpdump";
     private static final int notificationId = 13371337;
 
-    private String[] command;
+    private String command;
     private BroadcastReceiver stopReceiver;
     private Process tcpdump;
     private AsyncTask bufferRead;
@@ -79,7 +78,7 @@ public class TcpDumpWrapper extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.wtf("Bind","In method");
+        Log.wtf("Service","Created");
         if(stopReceiver!=null)
             unregisterReceiver(stopReceiver);
         stopReceiver = new BroadcastReceiver() {
@@ -126,35 +125,39 @@ public class TcpDumpWrapper extends Service {
         Toast.makeText(context.getApplicationContext(), R.string.tcpdump_stopped, Toast.LENGTH_LONG).show();
     }
 
-    private String[] constructCommand(Intent intent) {
-        ArrayList<String> ret=new ArrayList<>();
-        ret.add("su");
-        ret.add("-c");
-        ret.add(TCPDUMP);
+    private String constructCommand(Intent intent) {
+        String ret="";
+        ret+=("su ");
+        ret+=("-c ");
+        ret+=(TCPDUMP);
 
-        if(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS)!=null)
-            ret.add(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS));
 
-        if(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_RUN_UNTIL)!=null){
-            ret.add("-G");
-            ret.add(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_RUN_UNTIL));
-            ret.add("-W");
-            ret.add("1");
+        if(!(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS).equals("") && intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS).equals(" ")))
+            ret+=(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS));
+
+        if(!intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_RUN_UNTIL).equals("")){
+            ret+=("-G");
+            ret+=(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_RUN_UNTIL));
+            ret+=(" -W ");
+            ret+=("1");
         }
 
-        if (intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN) != null) {
-            ret.add("-w");
-            ret.add("-");
-            ret.add("|");
-            ret.add("tee");
-            ret.add(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN));
-            ret.add("|");
-            ret.add(TCPDUMP);
-            ret.add("-r");
-            ret.add("-");
+        String zob=intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN);
+        if (!intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN).equals("")) {
+            ret+=(" -w ");
+            ret+=("- ");
+            ret+=("|");
+            ret+=("tee");
+            ret+=(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN));
+            ret+=("|");
+            ret+=(TCPDUMP);
+            ret+=(" -r ");
+            ret+=("-");
         }
 
-        return ret.toArray(new String[ret.size()]);
+        Log.wtf("Command",ret);
+
+        return ret;
     }
 
     private void runTCPDump() throws IOException {
@@ -183,6 +186,12 @@ public class TcpDumpWrapper extends Service {
         }.execute();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.wtf("Service","Killed");
+    }
+
     private void createNotification(){
         //Necessary to maintain service up
 
@@ -190,8 +199,8 @@ public class TcpDumpWrapper extends Service {
         intent.setAction(STOP_TCPDUMP);
         PendingIntent pIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent activityIntent = new Intent(this, SnifferActivity.class);
-        PendingIntent pActivityIntent = PendingIntent.getActivity(this, 0, activityIntent, 0);
+        Intent activityIntent = new Intent(getApplicationContext(), SnifferActivity.class);
+        PendingIntent pActivityIntent = PendingIntent.getActivity(getApplicationContext(), 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         notification = new Notification.Builder(this)
