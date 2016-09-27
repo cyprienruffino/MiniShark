@@ -1,4 +1,4 @@
-package fr.soup.minishark.dialogs;
+package ovh.soup.minishark.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 
-import fr.soup.minishark.R;
+import ovh.soup.minishark.R;
 
 /**
  * Created by cyprien on 13/07/16.

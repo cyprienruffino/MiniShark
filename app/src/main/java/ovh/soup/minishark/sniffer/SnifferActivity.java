@@ -1,4 +1,4 @@
-package fr.soup.minishark.sniffer;
+package ovh.soup.minishark.sniffer;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -24,8 +24,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fr.soup.minishark.R;
-import fr.soup.minishark.dialogs.ConnectionDialog;
+import ovh.soup.minishark.R;
+import ovh.soup.minishark.dialogs.ConnectionDialog;
 
 /**
  * Created by cyprien on 08/07/16.

@@ -1,12 +1,11 @@
-package fr.soup.minishark;
+package ovh.soup.minishark;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import fr.soup.minishark.R;
-import fr.soup.minishark.sniffer.SnifferActivity;
+import ovh.soup.minishark.sniffer.SnifferActivity;
 
 /**
  * Created by cyprien on 21/09/16.

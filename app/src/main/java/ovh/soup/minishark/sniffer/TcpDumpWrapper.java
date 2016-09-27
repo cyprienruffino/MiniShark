@@ -1,4 +1,4 @@
-package fr.soup.minishark.sniffer;
+package ovh.soup.minishark.sniffer;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import fr.soup.minishark.R;
+import ovh.soup.minishark.R;
 
 
 /**

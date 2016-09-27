@@ -1,11 +1,11 @@
-package fr.soup.minishark.dialogs;
+package ovh.soup.minishark.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 
-import fr.soup.minishark.R;
+import ovh.soup.minishark.R;
 
 /**
  * Created by cyprien on 13/07/16.
