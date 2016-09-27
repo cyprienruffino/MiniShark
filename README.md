@@ -22,4 +22,4 @@ MiniShark is under GPL licence, and is using :
 The developping team is not in responsible of any illegal activities done with MiniShark. This include, but not only, analysis of private data.
 
 ## Advertising
-Please note that, for obvious reasons, the published version of this software is not the one present on this repository, as it includes advertising. This will be the only difference between those two versions.
+Please note that, for obvious reasons, the published version of this software will not the one present on this repository, as it will include advertising. This will be the only difference between the two versions, and any modification applied on the open version will also be applied to the closed version.
