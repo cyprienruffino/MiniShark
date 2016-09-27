@@ -36,3 +36,6 @@ captures/
 # Intellij
 *.iml 
 .idea
+
+# Google
+.google
