@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,6 +31,7 @@ import ovh.soup.minishark.dialogs.ConnectionDialog;
  */
 public class SnifferActivity extends Activity{
 
+    public static final String PCAP_FOLDER="/storage/emulated/legacy/pcap/";
     public static final String SNIFFER_FLAGS_INTENT_MANUAL_FLAGS = "snifferactivityflagsintentmanualflags";
     public static final String SNIFFER_FLAGS_INTENT_SAVE_IN = "snifferactivityflagsintentsavein";
     public static final String SNIFFER_FLAGS_INTENT_RUN_UNTIL = "snifferactivityflagsintentrununtil";
@@ -76,11 +76,6 @@ public class SnifferActivity extends Activity{
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo mWifi = wifi.getConnectionInfo();
 
-        if (wifi.isWifiEnabled() == false)
-        {
-            Toast.makeText(context.getApplicationContext(), R.string.disconnected_toast, Toast.LENGTH_LONG).show();
-            wifi.setWifiEnabled(true);
-        }
 
         if (mWifi.getSupplicantState() != SupplicantState.COMPLETED) {
             new ConnectionDialog().show(getFragmentManager(),"connection_dialog");
@@ -121,14 +116,14 @@ public class SnifferActivity extends Activity{
         Intent intent = new Intent(this, TcpDumpWrapper.class);
         EditText editText = (EditText) findViewById(R.id.manualflags);
 
-        if(editText.getText().toString()!=null)
-            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS, editText.getText().toString() + " ");
+        if(editText.getText().toString()!="")
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS, editText.getText().toString());
         else
             intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS,"");
 
         if(((CheckBox)findViewById(R.id.saveinfile)).isChecked()) {
             editText = (EditText) findViewById(R.id.pcapfile);
-            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN, "/storage/emulated/legacy/" + editText.getText().toString());
+            intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN, PCAP_FOLDER + editText.getText().toString());
         }
         else
             intent.putExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN,"");

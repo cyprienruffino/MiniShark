@@ -18,7 +18,6 @@ public class ConnectionDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder =new AlertDialog.Builder(getActivity());
-        Bundle bundle = this.getArguments();
 
         builder.setMessage(R.string.not_connected_message);
         builder.setTitle(R.string.connect_title)

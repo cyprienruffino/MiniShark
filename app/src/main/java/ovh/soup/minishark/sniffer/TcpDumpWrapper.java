@@ -142,12 +142,12 @@ public class TcpDumpWrapper extends Service {
             ret+=("1");
         }
 
-        String zob=intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN);
         if (!intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN).equals("")) {
+            ret+=(" -U ");
             ret+=(" -w ");
             ret+=("- ");
             ret+=("|");
-            ret+=("tee");
+            ret+=("tee ");
             ret+=(intent.getStringExtra(SnifferActivity.SNIFFER_FLAGS_INTENT_SAVE_IN));
             ret+=("|");
             ret+=(TCPDUMP);
@@ -161,6 +161,11 @@ public class TcpDumpWrapper extends Service {
     }
 
     private void runTCPDump() throws IOException {
+
+        File pcapFolder = new File(SnifferActivity.PCAP_FOLDER);
+        if(!pcapFolder.exists())
+            pcapFolder.mkdirs();
+
 
         tcpdump = Runtime.getRuntime().exec(command);
         tcpdumpStream = new BufferedReader(new InputStreamReader(tcpdump.getInputStream()));
