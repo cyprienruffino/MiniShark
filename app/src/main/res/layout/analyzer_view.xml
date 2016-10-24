@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1"
-    tools:context=".views.SnifferActivity">
+    android:layout_height="match_parent">
 
 
     <LinearLayout
@@ -12,37 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:text="@string/restart_capture"
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_snifferStart"
-            android:onClick="snifferRestart"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editTextPcapPath"
             android:layout_weight="1" />
 
         <Button
-            android:text="Stop"
+            android:text="Browse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_stop"
-            android:onClick="snifferStop"
+            android:id="@+id/button"
             android:layout_weight="1" />
 
         <Button
-            android:text="Clear"
+            android:text="Load"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_clear"
+            android:id="@+id/button2"
             android:layout_weight="1"
-            android:onClick="clear" />
+            android:onClick="loadPackets"/>
+
     </LinearLayout>
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sharkListView"
-        android:choiceMode="singleChoice"
-        android:stackFromBottom="true" />
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/packetsListView"/>
 
 </LinearLayout>

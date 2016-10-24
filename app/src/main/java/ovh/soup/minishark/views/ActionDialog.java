@@ -1,4 +1,4 @@
-package ovh.soup.minishark.dialogs;
+package ovh.soup.minishark.views;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

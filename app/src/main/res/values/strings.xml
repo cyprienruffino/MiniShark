@@ -19,5 +19,8 @@
     <string name="notification_sniffing_title">MiniShark is running</string>
     <string name="tcpdump_stopped">Stopping tcpdump...</string>
     <string name="restart_capture">Restart capture</string>
+    <string name="settings">Settings</string>
+    <string name="credit">Credits</string>
+    <string name="analyzer">Analyzer</string>
 
 </resources>

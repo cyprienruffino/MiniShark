@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    buildToolsVersion '24.0.0'
 
     defaultConfig {
         applicationId 'ovh.soup.minishark'
@@ -13,22 +13,13 @@ android {
     }
 
     productFlavors {
-        x86 {
+        deploy {
             ndk {
-                abiFilter "x86"
+                abiFilters "armeabi-v7a", "armeabi", "x86", "mipss"
             }
-        }
-        arm {
-            ndk {
-                abiFilters "armeabi-v7a", "armeabi"
-            }
-            minSdkVersion 19
-            targetSdkVersion 19
-        }
-        mips {
-            ndk {
-                abiFilter "mips"
-            }
+            minSdkVersion 18
+            targetSdkVersion 18
+            applicationId 'ovh.soup.minishark'
         }
     }
 
@@ -45,6 +36,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters "x86", "armeabi-v7a", "armeabi", "mips"
+            }
         }
     }
     compileOptions {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <ImageView
+        android:src="@drawable/minishark_splash"
+        android:layout_width="match_parent"
+        android:id="@+id/imageView"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:text="Application by Cyprien RUFFINO"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textSize="24sp" />
+
+    <TextView
+        android:text="libpcap and tcpdump bu the University of California, Berekley"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:textSize="14sp" />
+
+    <TextView
+        android:text="jNetPcap by Sly Technologies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:textSize="14sp" />
+
+    <TextView
+        android:text="https://github.com/Moi4167/MiniShark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5" />
+
+</LinearLayout>
