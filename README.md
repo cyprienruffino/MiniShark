@@ -6,9 +6,9 @@
 
 - Packets capture
 - Packets header data visualisation
-- Packet data analysis
+- Deep packet analysis
 - Frame reconstruction
-- Files from packet capture extraction
+- Extraction of files from capture
 
 # Legal notes
 ## Licence
@@ -20,6 +20,3 @@ MiniShark is under GPL licence, and is using :
 
 ## Usage
 The developping team is not in responsible of any illegal activities done with MiniShark. This include, but not only, analysis of private data.
-
-## Advertising
-Please note that, for obvious reasons, the published version of this software will not the one present on this repository, as it will include advertising. This will be the only difference between the two versions, and any modification applied on the open version will also be applied to the closed version.
