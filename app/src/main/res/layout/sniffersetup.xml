@@ -12,7 +12,7 @@
             android:layout_height="wrap_content">
 
             <CheckBox
-                android:text="Save in file"
+                android:text="@string/save_in_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/saveinfile"
@@ -25,7 +25,7 @@
                 android:ems="10"
                 android:id="@+id/pcapfile"
                 android:layout_weight="1"
-                android:text="captured.pcap" />
+                android:text="@string/captured_pcap" />
 
         </LinearLayout>
 
@@ -35,16 +35,16 @@
             android:layout_height="wrap_content">
 
             <CheckBox
-                android:text="Run until..."
+                android:text="@string/run_until"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rununtil" />
 
             <EditText
-                android:layout_width="81dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="10"
+                android:text="@string/_10"
                 android:ems="10"
                 android:id="@+id/rununtiltime"
                 android:layout_weight="0.13" />
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Manual flags"
+                android:text="@string/manual_flags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView"
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:text="Start capture!"
+            android:text="@string/start_capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_snifferStart"
@@ -94,7 +94,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:text="Stop"
+            android:text="@string/stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_stop"
@@ -102,7 +102,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:text="Clear"
+            android:text="@string/clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_clear"

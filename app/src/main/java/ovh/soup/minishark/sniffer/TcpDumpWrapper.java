@@ -40,7 +40,7 @@ public class TcpDumpWrapper extends Service {
     public static final String INIT_BROADCAST = "tcpdumpwrapper_init_broadcast";
     public static final String INIT_REQUEST = "tcpdumpwrapper_init_request";
 
-    private static final String TCPDUMP = "/data/data/ovh.soup.minishark/files/tcpdump";
+    private static String TCPDUMP;
     private static final int notificationId = 13371337;
 
     private String command;
@@ -91,6 +91,8 @@ public class TcpDumpWrapper extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d("Service","Created");
+
+        TCPDUMP = getFilesDir() + "/tcpdump";
 
         packets=new ArrayList<>();
         stopReceiver = new BroadcastReceiver() {
