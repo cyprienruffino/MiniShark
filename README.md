@@ -2,7 +2,7 @@
 **A mini packet sniffer and network analysis tool for rooted Android devices**
 
 # Features 
-**(Those are planned features, the application is still in heavy developpment)**
+**(Those are planned features, the application is still in heavy development)**
 
 - Packets capture
 - Packets header data visualisation
