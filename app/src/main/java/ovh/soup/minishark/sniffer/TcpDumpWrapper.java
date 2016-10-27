@@ -159,7 +159,7 @@ public class TcpDumpWrapper extends Service {
         tcpdumpRunning=false;
         closeReceivers();
 
-        Toast.makeText(context.getApplicationContext(), R.string.tcpdump_stopped, Toast.LENGTH_LONG).show();
+        Toast.makeText(context.getApplicationContext(), R.string.tcpdump_stopped, Toast.LENGTH_SHORT).show();
         stopSelf();
     }
 

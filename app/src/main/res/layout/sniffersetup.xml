@@ -6,108 +6,85 @@
     android:weightSum="1"
     tools:context=".views.SnifferSetupActivity">
 
-           <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <CheckBox
-                android:text="@string/save_in_file"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/saveinfile"
-                android:layout_weight="1" />
+        <CheckBox
+            android:text="@string/save_in_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/saveinfile"
+            android:layout_weight="1" />
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/pcapfile"
-                android:layout_weight="1"
-                android:text="@string/captured_pcap" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/pcapfile"
+            android:layout_weight="1"
+            android:text="@string/captured_pcap" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <CheckBox
-                android:text="@string/run_until"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rununtil" />
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="@string/_10"
-                android:ems="10"
-                android:id="@+id/rununtiltime"
-                android:layout_weight="0.13" />
-
-            <TextView
-                android:text="seconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView2" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="@string/manual_flags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView"
-                android:layout_weight="1"
-                android:textAppearance="@android:style/TextAppearance"
-                android:textAlignment="center" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/manualflags"
-                android:layout_weight="1" />
-        </LinearLayout>
-
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:text="@string/start_capture"
+        <CheckBox
+            android:text="@string/run_until"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_snifferStart"
-            android:onClick="snifferStart"
-            android:layout_weight="1" />
+            android:id="@+id/rununtil" />
 
-        <Button
-            android:text="@string/stop"
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button_stop"
-            android:onClick="snifferStop"
-            android:layout_weight="1" />
+            android:inputType="textPersonName"
+            android:text="@string/_10"
+            android:ems="10"
+            android:id="@+id/rununtiltime"
+            android:layout_weight="0.13" />
 
-        <Button
-            android:text="@string/clear"
+        <TextView
+            android:text="seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_clear"
-            android:layout_weight="1"
-            android:onClick="clear" />
+            android:id="@+id/textView2" />
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/manual_flags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_weight="1"
+            android:textAppearance="@android:style/TextAppearance"
+            android:textAlignment="center" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/manualflags"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <Button
+        android:text="@string/start_capture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_snifferStart"
+        android:onClick="snifferStart"
+        />
 
 </LinearLayout>

@@ -162,6 +162,7 @@ public class SnifferActivity extends Activity{
         }
         receiversRegistered=false;
     }
+
     private void openReceivers() {
         if(!receiversRegistered){
             registerReceiver(sharkReceiver, new IntentFilter(TcpDumpWrapper.REFRESH_DATA_INTENT));
