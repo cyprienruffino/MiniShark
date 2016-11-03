@@ -20,7 +20,25 @@ import ovh.soup.minishark.sniffer.TcpDumpWrapper;
 
 /**
  * Created by cyprien on 08/07/16.
+ *
+ * This file is part of Minishark.
+ *
+ *   Minishark is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Minishark is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Minishark.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Project repository : https://github.com/Moi4167/Minishark
  */
+
 public class SnifferSetupActivity extends Activity{
 
     public static final String PCAP_FOLDER="/storage/emulated/legacy/pcap/";
@@ -101,7 +119,7 @@ public class SnifferSetupActivity extends Activity{
 
     private void createIntent(Intent intent) {
         EditText editText = (EditText) findViewById(R.id.manualflags);
-        if(editText.getText().toString()!="")
+        if(!("".equals(editText.getText().toString())))
             intent.putExtra(SnifferSetupActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS, editText.getText().toString());
         else
             intent.putExtra(SnifferSetupActivity.SNIFFER_FLAGS_INTENT_MANUAL_FLAGS,"");

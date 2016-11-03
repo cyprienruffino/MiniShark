@@ -22,9 +22,26 @@ import ovh.soup.minishark.sniffer.TcpDumpWrapper;
 
 /**
  * Created by cyprien on 08/07/16.
+ *
+ * This file is part of Minishark.
+ *
+ *   Minishark is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Minishark is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Minishark.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Project repository : https://github.com/Moi4167/Minishark
  */
+
 public class SnifferActivity extends Activity{
-    private ListView listView;
     private boolean tcpdumpBound = false;
     private ArrayList<String> packets;
     private ArrayAdapter<String> adapter;
@@ -36,12 +53,12 @@ public class SnifferActivity extends Activity{
     private BroadcastReceiver sharkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == TcpDumpWrapper.REFRESH_DATA_INTENT) {
+            if (intent.getAction().equals(TcpDumpWrapper.REFRESH_DATA_INTENT)) {
                 Log.wtf("Refresh","InReceiver");
                 packets.add(intent.getStringExtra(TcpDumpWrapper.REFRESH_DATA));
                 adapter.notifyDataSetChanged();
             }
-            if(intent.getAction() == TcpDumpWrapper.INIT_DATA_INTENT){
+            if(intent.getAction().equals(TcpDumpWrapper.INIT_DATA_INTENT)){
                 Log.wtf("Init","InReceiver");
                 packets.addAll(intent.getStringArrayListExtra(TcpDumpWrapper.INIT_DATA));
                 adapter.notifyDataSetChanged();
@@ -52,7 +69,7 @@ public class SnifferActivity extends Activity{
     private BroadcastReceiver stopReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == TcpDumpWrapper.STOP_TCPDUMP_INTENT) {
+            if (intent.getAction().equals(TcpDumpWrapper.STOP_TCPDUMP_INTENT)) {
                 if(mConnection!=null && binder.isBinderAlive() && tcpdumpBound) {
                     unbindService(mConnection);
                     tcpdumpBound = false;
@@ -68,7 +85,7 @@ public class SnifferActivity extends Activity{
 
         Log.wtf("SnifferActivity","OnCreate");
 
-        listView=(ListView)findViewById(R.id.sharkListView);
+        ListView listView = (ListView) findViewById(R.id.sharkListView);
         listView.setTranscriptMode(2);
         packets=new ArrayList<>();
         adapter= new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, packets);

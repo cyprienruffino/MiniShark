@@ -26,10 +26,27 @@ import ovh.soup.minishark.R;
 import ovh.soup.minishark.views.SnifferActivity;
 import ovh.soup.minishark.views.SnifferSetupActivity;
 
-
 /**
- * Created by cyprien on 19/09/16.
+ * Created by ${USER} on ${DATE}.
+ *
+ * This file is part of Minishark.
+ *
+ *   Minishark is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Minishark is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Minishark.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Project repository : https://github.com/Moi4167/Minishark
  */
+
 public class TcpDumpWrapper extends Service {
     public static final String START_TCPDUMP_INTENT = "tcpdumpwrapper_start_tcpdump_intent";
     public static final String STOP_TCPDUMP_INTENT = "tcpdumpwrapper_stop_tcpdump_intent";
@@ -49,7 +66,6 @@ public class TcpDumpWrapper extends Service {
     private BroadcastReceiver initReceiver;
     private Process tcpdump;
     private AsyncTask bufferRead;
-    private Notification notification;
     private ArrayList<String> packets;
 
     private boolean receiversRegistered = false;
@@ -95,26 +111,18 @@ public class TcpDumpWrapper extends Service {
         TCPDUMP = getFilesDir() + "/tcpdump";
 
         packets=new ArrayList<>();
+
         stopReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) { if (intent.getAction().equals(STOP_TCPDUMP_INTENT)) stop(context); }
         };
         initReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) { sendBroadcast(new Intent(INIT_DATA_INTENT).putExtra(INIT_DATA, packets)); Log.wtf("Service", "Refresh " + packets.toString());}
+            public void onReceive(Context context, Intent intent) { sendBroadcast(new Intent(INIT_DATA_INTENT).putExtra(INIT_DATA, packets));}
         };
         startReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                command=constructCommand(intent);
-                createNotification();
-                tcpdumpRunning=true;
-                try {
-                    runTCPDump();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            public void onReceive(Context context, Intent intent) { command=constructCommand(intent); createNotification(); runTCPDump();}
         };
 
         openReceivers();
@@ -190,19 +198,25 @@ public class TcpDumpWrapper extends Service {
         return ret;
     }
 
-    private void runTCPDump() throws IOException {
-
+    private void runTCPDump() {
+        tcpdumpRunning=true;
         File pcapFolder = new File(SnifferSetupActivity.PCAP_FOLDER);
         if(!pcapFolder.exists())
             pcapFolder.mkdirs();
 
-
-        tcpdump = Runtime.getRuntime().exec(command);
+        try {
+            tcpdump = Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            tcpdumpRunning=false;
+            Toast.makeText(this, "Failed to run TCPDump, do you have root permissions?", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            return;
+        }
         tcpdumpStream = new BufferedReader(new InputStreamReader(tcpdump.getInputStream()));
-        bufferRead = new AsyncTask() {
+        bufferRead = new AsyncTask<Object, Void, Void>() {
             String buffer;
             @Override
-            protected Object doInBackground(Object[] objects) {
+            protected Void doInBackground(Object[] params) {
                 while(tcpdumpRunning) {
                     try {
                         if((buffer = tcpdumpStream.readLine())!= null) {
@@ -233,7 +247,7 @@ public class TcpDumpWrapper extends Service {
         PendingIntent pActivityIntent = PendingIntent.getActivity(getApplicationContext(), 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        notification = new Notification.Builder(this)
+        Notification notification = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.minishark_icon_low_res)
                 .setContentTitle(getString(R.string.notification_sniffing_title))
                 .setContentText(getString(R.string.notification_sniffing))
