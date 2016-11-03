@@ -19,4 +19,4 @@ MiniShark is under GPL licence, and is using :
 - tcpdump : BSD Licence
 
 ## Usage
-The developping team is not in responsible of any illegal activities done with MiniShark. This include, but not only, capture and analysis of private communications without its owner permission.
+The developping team is not in responsible of any illegal activities done with MiniShark. This include, but not only, capture and analysis of a private communication without its owner permission.
