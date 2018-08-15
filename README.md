@@ -1,9 +1,6 @@
 # MiniShark
 **A mini packet sniffer and network analysis tool for rooted Android devices**
 
-**For a more powerful version of this tool, see [MegaShark](https://github.com/Moi4167/MegaShark)**
-
-
 # Features 
 
 * [Packets capture](https://github.com/Moi4167/MiniShark/wiki/Packets-capture)
